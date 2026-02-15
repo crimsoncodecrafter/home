@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coming Soon</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f4f4f4;
+  --text:#222;
+  --card:#ffffff;
+  --primary:#4caf50;
+  --transition:0.5s ease;
+}
+
+body.dark{
+  --bg:#111;
+  --text:#eee;
+  --card:#1c1c1c;
+  --primary:#66bb6a;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+
+body{
+  display:flex;
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  transition:var(--transition);
+}
+
+/* THEME TRANSITION OVERLAY */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s ease;
+  z-index:998;
+}
+
+.head {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.para {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+body.theme-changing::before{opacity:1}
+
+.left{
+  width:40%;
+  padding:60px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+/* BRAND AREA */
+.brand-wrapper{
+  display:flex;
+  align-items:center;
+  gap:25px;
+  margin-bottom:30px;
+  position:relative;
+  overflow:hidden;
+}
+
+.brand-img{
+  height:150px;
+  object-fit:contain;
+  opacity:0;
+  transform:translateX(40px);
+  animation:slideReveal 1s forwards;
+}
+
+.brand-img:first-child{
+  transform:translateX(-40px);
+}
+
+.brand-divider{
+  width:2px;
+  height:100px;
+  background:linear-gradient(to bottom, transparent, var(--text), transparent);
+  opacity:0;
+  animation:fadeIn 1s forwards 0.4s;
+}
+
+@keyframes slideReveal{
+  to{opacity:1; transform:translateX(0)}
+}
+
+@keyframes fadeIn{to{opacity:0.4}}
+
+/* Smooth image crossfade */
+#brandText{transition:opacity 0.5s ease}
+
+input{
+  width:100%;
+  padding:14px;
+  margin-bottom:12px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+button{
+  padding:14px;
+  border:none;
+  background:var(--primary);
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{transform:scale(1.05)}
+
+/* SUN MOON MORPH */
+.theme-toggle{
+  position:fixed;
+  top:20px;
+  right:25px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:var(--card);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  cursor:pointer;
+  z-index:999;
+}
+
+.theme-toggle svg{
+  width:28px;
+  height:28px;
+  transition:0.6s ease;
+}
+
+body.dark .sun{opacity:0; transform:rotate(180deg) scale(0)}
+body.dark .moon{opacity:1; transform:rotate(0) scale(1)}
+
+.sun{opacity:1; transform:rotate(0) scale(1)}
+.moon{position:absolute; opacity:0; transform:rotate(-180deg) scale(0)}
+
+/* RIGHT SIDE */
+.right{
+  width:60%;
+  background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+
+.overlay{position:absolute; inset:0; background:rgba(0,0,0,0.5)}
+
+.countdown{display:flex; gap:40px; z-index:2; flex-wrap:wrap; justify-content:center}
+
+.ring{width:130px;height:130px;position:relative}
+
+.ring svg{transform:rotate(-90deg)}
+
+.ring circle{fill:none;stroke-width:8;stroke:rgba(255,255,255,0.2)}
+
+.ring circle.progress{
+  stroke:var(--primary);
+  stroke-dasharray:377;
+  stroke-dashoffset:377;
+  transition:1s linear;
+}
+
+.ring .label{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:white;
+  text-align:center;
+}
+
+/* SOCIAL MEDIA */
+.socials{
+  margin-top:30px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+}
+
+.socials a{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--card);
+  box-shadow:0 6px 14px rgba(0,0,0,0.25);
+  text-decoration:none;
+  font-size:20px;
+  transition:all 0.35s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.socials a::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:var(--primary);
+  opacity:0;
+  transform:scale(0.3);
+  transition:0.35s ease;
+  z-index:0;
+}
+
+.socials a span{
+  position:relative;
+  z-index:1;
+  transition:0.35s ease;
+}
+
+.socials a:hover{
+  transform:translateY(-6px) scale(1.15);
+  box-shadow:0 10px 20px rgba(0,0,0,0.35);
+}
+
+.socials a:hover::before{
+  opacity:1;
+  transform:scale(1);
+}
+
+.socials a:hover span{
+  color:white;
+}
+
+/* MOBILE SUPPORT */
+@media(max-width:900px){
+  body{flex-direction:column}
+  .left,.right{width:100%; height:auto}
+  .left{padding:40px 20px}
+  .brand-wrapper{justify-content:center}
+}
+
+</style>
+</head>
+
+<body class="dark">
+
+<div class="theme-toggle" onclick="toggleTheme()">
+  <svg viewBox="0 0 24 24" class="sun"><circle cx="12" cy="12" r="5" fill="orange"/></svg>
+  <svg viewBox="0 0 24 24" class="moon"><path fill="white" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</div>
+
+<div class="left">
+
+  <div class="brand-wrapper">
+    <img src="logo.png" class="brand-img">
+    <div class="brand-divider"></div>
+    <img src="brandtext-dark.png" id="brandText" class="brand-img">
+  </div>
+
+  <h2 class="head">Our Website is Coming Soon</h2>
+  <p class="para">Subscribe to get updates</p>
+
+  <form id="subscribeForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Email Address" required>
+    <button type="submit">Subscribe</button>
+  </form>
+
+  <!-- SOCIAL MEDIA -->
+  <div class="socials">
+    <a href="#" aria-label="Facebook"><span>📘</span></a>
+    <a href="#" aria-label="Instagram"><span>📸</span></a>
+    <a href="#" aria-label="YouTube"><span>▶️</span></a>
+    <a href="#" aria-label="WhatsApp"><span>💬</span></a>
+    <a href="#" aria-label="Telegram"><span>✈️</span></a>
+    <a href="#" aria-label="LinkedIn"><span>💼</span></a>
+    <a href="#" aria-label="X"><span>❌</span></a>
+    <a href="#" aria-label="GitHub"><span>🐙</span></a>
+  </div>
+
+</div>
+
+<div class="right">
+  <div class="overlay"></div>
+  <div class="countdown">
+
+    <div class="ring">
+      <svg width="130" height="130">
+        <circle cx="65" cy="65" r="60"></circle>
+        <circle id="daysRing" class="progress" cx="65" cy="65" r="60"></circle>
+      </svg>
+      <div class="label"><h3 id="days">0</h3><small>Days</small></div>
+    </div>
+
+    <div class="ring">
+      <svg width="130" height="130">
+        <circle cx="65" cy="65" r="60"></circle>
+        <circle id="hoursRing" class="progress" cx="65" cy="65" r="60"></circle>
+      </svg>
+      <div class="label"><h3 id="hours">0</h3><small>Hours</small></div>
+    </div>
+
+    <div class="ring">
+      <svg width="130" height="130">
+        <circle cx="65" cy="65" r="60"></circle>
+        <circle id="minutesRing" class="progress" cx="65" cy="65" r="60"></circle>
+      </svg>
+      <div class="label"><h3 id="minutes">0</h3><small>Minutes</small></div>
+    </div>
+
+    <div class="ring">
+      <svg width="130" height="130">
+        <circle cx="65" cy="65" r="60"></circle>
+        <circle id="secondsRing" class="progress" cx="65" cy="65" r="60"></circle>
+      </svg>
+      <div class="label"><h3 id="seconds">0</h3><small>Seconds</small></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+// CROSSFADE BRAND IMAGE
+function swapBrand(isDark){
+  const img=document.getElementById('brandText')
+  img.style.opacity=0
+  setTimeout(()=>{
+    img.src=isDark?"brandtext-dark.png":"brandtext-light.png"
+    img.style.opacity=1
+  },250)
+}
+
+// THEME TOGGLE
+function toggleTheme(){
+  document.body.classList.add('theme-changing')
+  setTimeout(()=>document.body.classList.remove('theme-changing'),400)
+
+  document.body.classList.toggle('dark')
+  swapBrand(document.body.classList.contains('dark'))
+}
+
+// DETECT USER THEME
+window.addEventListener('load',()=>{
+  const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches
+  if(!prefersDark){
+    document.body.classList.remove('dark')
+    swapBrand(false)
+  }
+})
+
+// COUNTDOWN
+const launchDate=new Date('April 30 2026 00:00:00').getTime()
+const circumference=377
+
+setInterval(()=>{
+  const now=new Date().getTime()
+  const diff=launchDate-now
+
+  const days=Math.floor(diff/(1000*60*60*24))
+  const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60))
+  const minutes=Math.floor((diff%(1000*60*60))/(1000*60))
+  const seconds=Math.floor((diff%(1000*60))/1000)
+
+  document.getElementById('days').textContent=days
+  document.getElementById('hours').textContent=hours
+  document.getElementById('minutes').textContent=minutes
+  document.getElementById('seconds').textContent=seconds
+
+  document.getElementById('secondsRing').style.strokeDashoffset=circumference-(seconds/60)*circumference
+  document.getElementById('minutesRing').style.strokeDashoffset=circumference-(minutes/60)*circumference
+  document.getElementById('hoursRing').style.strokeDashoffset=circumference-(hours/24)*circumference
+  document.getElementById('daysRing').style.strokeDashoffset=circumference-(days/365)*circumference
+
+},1000)
+
+</script>
+
+</body>
+</html>
